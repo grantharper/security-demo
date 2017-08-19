@@ -5,24 +5,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
 @Profile("insecure")
-public class InsecureSecurityConfig extends WebSecurityConfigurerAdapter {
-	
+public class InsecureSecurityConfig extends BaseSecurityConfig {
+
 	public static Logger log = LoggerFactory.getLogger(InsecureSecurityConfig.class);
-	
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		super.configure(httpSecurity);
+		// disable CSRF protection
+		httpSecurity.csrf().disable();
+
+		// TODO: what does this do?
+		httpSecurity.headers().frameOptions().disable();
 		
-			httpSecurity.authorizeRequests().antMatchers("/**").permitAll()
-			.anyRequest().authenticated()
-			.and()
-			.formLogin().loginPage("/login").permitAll()
-			.and()
-			.logout().permitAll();
-		
+		httpSecurity.headers().xssProtection().disable();
+
 	}
 }

@@ -1,0 +1,25 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+</head>
+<body>
+<h1>Employee Portal</h1>
+<a href="/">Home</a>
+<div th:replace="fragments/logout :: logout"></div>
+<br/>
+<a href="/employee/BC-0000123">Download Employee Info</a>
+<br/>
+<h3>Customer Information</h3>
+<table>
+<thead>
+<tr><th>Customer Id</th><th>Name</th><th>Review</th></tr>
+</thead>
+<tbody>
+<tr th:each="customer: ${customers}">
+<td th:text="${customer.customerId}">X</td>
+<td th:utext="${customer.firstName + ' ' + customer.lastName}">BBBB</td>
+<td><a th:href="@{/employee/customer/} + ${customer.customerId}">View Accounts</a></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

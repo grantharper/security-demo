@@ -5,9 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="bank_account")
 public class BankAccount {
 
 	@Id
@@ -16,8 +19,8 @@ public class BankAccount {
 	private Long accountId;
 	
 	@ManyToOne
-	@Column(name="customer_id")
-	private Long customerId;
+	@JoinColumn(name="customer_id")
+	private Customer customerId;
 	
 	private Double balance;
 
@@ -29,11 +32,11 @@ public class BankAccount {
 		this.accountId = accountId;
 	}
 
-	public Long getCustomerId() {
+	public Customer getCustomerId() {
 		return customerId;
 	}
 
-	public void setCustomerId(Long customerId) {
+	public void setCustomerId(Customer customerId) {
 		this.customerId = customerId;
 	}
 

@@ -9,21 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @Profile("secure")
-public class SecureSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecureSecurityConfig extends BaseSecurityConfig {
 	
 	public static Logger log = LoggerFactory.getLogger(SecureSecurityConfig.class);
-	
-	//put in some user authorization details here
 
-	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		
-			httpSecurity.authorizeRequests().antMatchers("/**").permitAll()
-			.anyRequest().authenticated()
-			.and()
-			.formLogin().loginPage("/login").permitAll()
-			.and()
-			.logout().permitAll();
-		
-	}
+
 }

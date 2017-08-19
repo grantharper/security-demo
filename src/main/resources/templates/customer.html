@@ -1,0 +1,37 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+</head>
+<body>
+<h1>Customer Portal</h1>
+<a href="/">Home</a>
+
+<div th:replace="fragments/logout :: logout"></div>
+<br/>
+<h3>Customer Information</h3>
+<!--hack <script>alert("hacked");</script> -->
+<!-- <script type="text/javascript" src="js/read-accounts.js"></script> -->
+<!-- <script type="text/javascript" th:src="@{js/read-accounts.js}"></script> -->
+<span>Name: <span th:utext="${customer.firstName} + ' ' + ${customer.lastName}"></span></span>
+<br/>
+<span>Change Name:</span>
+<form th:action="@{/customer}" method="get">
+<input type="text" name="firstName"/>
+<input type="text" name="lastName" />
+<button>Submit</button>
+</form>
+<!-- <script>alert("Cookie=" + document.cookie.jsessionid);</script> -->
+<h3>Account Information</h3>
+<table id="accountInformation">
+<thead>
+<tr><th>Account Number</th><th>Balance</th><th>Action</th></tr>
+</thead>
+<tbody>
+<tr th:each="account: ${customer.accounts}">
+<td th:text="${account.accountId}">X</td>
+<td th:text="${account.balance}">BBBB</td>
+<td><a th:href="@{/customer/account/} + ${account.accountId}">Manage</a></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
