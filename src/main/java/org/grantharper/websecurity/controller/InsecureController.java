@@ -1,6 +1,8 @@
 package org.grantharper.websecurity.controller;
 
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -28,17 +30,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @Profile("insecure")
 public class InsecureController {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(InsecureController.class);
 
 	@Autowired
 	BankAccountService bankAccountService;
-
-	@RequestMapping(value = "/protected/{resourceId}", method = RequestMethod.GET)
-	public String accessProtectedResource(Model model, @PathVariable("resourceId") String resourceId) {
-
-		return "protected";
-	}
 
 	@RequestMapping(value = "/customer", method = RequestMethod.GET)
 	public String getCustomerPage(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -47,7 +43,7 @@ public class InsecureController {
 		Customer customer = bankAccountService.retrieveCustomerByUsername(username);
 		model.addAttribute("customer", customer);
 		model.addAttribute("nameTest", customer.getFirstName());
-		
+
 		return "customer";
 	}
 
@@ -58,22 +54,36 @@ public class InsecureController {
 		return "account";
 	}
 
-	@RequestMapping(value = "/customer", params = {"firstName", "lastName"}, method = RequestMethod.GET)
-	public String updateCustomerName(Model model, HttpServletRequest request,
-			@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
+//	@RequestMapping(value = "/customer", params = { "firstName", "lastName" }, method = RequestMethod.GET)
+//	public String updateCustomerName(Model model, HttpServletRequest request,
+//			@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
+//		log.debug("entered the param controller with firstName=" + firstName + " and lastName=" + lastName);
+//		String username = request.getUserPrincipal().getName();
+//		// bankAccountService.updateCustomerName(username, firstName, lastName);
+//		bankAccountService.updateCustomerNameInsecure(username, firstName, lastName);
+//		return "customer";
+//		//return "redirect:/customer";
+//	}
+	
+	@RequestMapping(value = "/customer", params = { "firstName", "lastName" }, method = RequestMethod.GET)
+	public String updateCustomerName(Model model, HttpServletRequest request
+			) {
+		String firstName = (String) request.getParameter("firstName");
+		String lastName = (String) request.getParameter("lastName");
 		log.debug("entered the param controller with firstName=" + firstName + " and lastName=" + lastName);
 		String username = request.getUserPrincipal().getName();
-		//bankAccountService.updateCustomerName(username, firstName, lastName);
 		bankAccountService.updateCustomerNameInsecure(username, firstName, lastName);
+
 		return "redirect:/customer";
 	}
-	
+
 	@RequestMapping(value = "/customer/account/{accountId}/deposit", method = RequestMethod.POST)
-	public String performCustomerDeposit(Model model, @PathVariable("accountId") String accountId, HttpServletRequest request){
-		
+	public String performCustomerDeposit(Model model, @PathVariable("accountId") String accountId,
+			HttpServletRequest request) {
+		log.debug("depositing into accountId=" + accountId + " amount=" + request.getParameter("amount"));
 		Double depositAmount = Double.valueOf(request.getParameter("amount"));
-		log.debug("depositing into accountId=" + accountId + " amount=" + depositAmount);
-		bankAccountService.deposit(Long.valueOf(accountId), depositAmount);
+		
+		bankAccountService.depositInsecure(Long.valueOf(accountId), depositAmount);
 		return "redirect:/customer/account/" + accountId;
 	}
 
@@ -91,30 +101,33 @@ public class InsecureController {
 		return "customer";
 	}
 
-	@RequestMapping(value = "/employee/{documentId}", method = RequestMethod.GET)
-	public void retrieveEmployeeDocument(Model model, @PathVariable("documentId") String documentId,
+	@RequestMapping(value = "/sensitive", method = RequestMethod.GET)
+	public void retrieveEmployeeDocument(Model model,
 			HttpServletResponse response) throws IOException {
 
-		if (documentId != null && documentId.equals("BC-0000123")) {
+		OutputStream outputStream = null;
+		response.setHeader("Content-Disposition", "attachment;filename=sensitive.txt");
+		response.setContentType("text/plain");
+		File file = new File("sensitive.txt");
+		response.setContentLengthLong(file.length());
 
-			OutputStream outputStream = null;
-			response.setHeader("Content-Disposition", "attachment;filename=sensitive.txt");
-			response.setContentType("text/plain");
-			File file = new File("sensitive.txt");
-
-			// TODO stream the file to the user
-			outputStream = response.getOutputStream();
-			outputStream.write(new byte[] {});
-			outputStream.close();
-
+		outputStream = response.getOutputStream();
+		DataInputStream in = new DataInputStream(new FileInputStream(file));
+		byte[] byteArray = new byte[8];
+		int length;
+		while ((in != null) && ((length = in.read(byteArray)) != -1)) {
+			outputStream.write(byteArray, 0, length);
 		}
 
+		in.close();
+		outputStream.close();
+
 	}
-	
+
 	@RequestMapping(value = "/receive-hack", method = RequestMethod.POST)
-	public @ResponseBody ResponseEntity<Object> receiveHack(HttpServletRequest request){
+	public @ResponseBody ResponseEntity<Object> receiveHack(HttpServletRequest request) {
 		log.info("hack sent account details: " + request.getParameter("accountInfo"));
-		
+
 		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 	}
 

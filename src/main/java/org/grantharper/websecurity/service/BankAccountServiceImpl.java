@@ -55,13 +55,23 @@ public class BankAccountServiceImpl implements BankAccountService {
 	}
 
 	@Override
-	public void deposit(Long accountId, Double depositAmount) {
+	public void depositInsecure(Long accountId, Double depositAmount) {
 		BankAccount account = accountRepo.findOne(accountId);
 		
 		Double currentBalance = account.getBalance();
 		currentBalance+=depositAmount;
 		
 		insecureDao.updateBalance(accountId, currentBalance);
+	}
+	
+	@Override
+	public void depositSecure(Long accountId, Double depositAmount) {
+		BankAccount account = accountRepo.findOne(accountId);
+		
+		Double currentBalance = account.getBalance();
+		currentBalance+=depositAmount;
+		account.setBalance(currentBalance);
+		accountRepo.save(account);
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter{
 		.and()
 		.withUser("liz").password("").roles("CUSTOMER").and()
 		.withUser("emp")
-				.password("emp").roles("EMPLOYEE");
+				.password("").roles("EMPLOYEE");
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter{
 		httpSecurity.authorizeRequests().antMatchers("/", "/console/**").permitAll()
 				.antMatchers("/customer", "/customer/**").hasRole("CUSTOMER").antMatchers("/employee", "/employee/**")
 				.hasRole("EMPLOYEE").anyRequest().authenticated().and().formLogin().permitAll().and().httpBasic().and()
-				.logout().permitAll();
+				.logout().logoutSuccessUrl("/").permitAll();
 	}
 	
 }

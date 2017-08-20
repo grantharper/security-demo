@@ -9,6 +9,7 @@ This application runs in two different modes:
 * Insecure - the application is exposed to attacks
 
 To run it in either mode, use the spring profile field when starting the app as follows
+
 `mvn spring-boot:run -Dspring.profiles.active=insecure`
 
 Currently, the application illustrates the following vulnerabilities
@@ -22,11 +23,13 @@ To exploit this vulnerability, log in as a customer and inject SQL into the firs
 `'; SQL Here; --`
 
 For example:
+
 `' DROP TABLE customer; --`
+
 `' UPDATE bank_account SET balance=999999999 WHERE customer_id=1; --
 
 Defending against this vulnerability can be done at multiple levels
-* Hibernate ORM
+* ORM
 * Input validation
 
 ## Cross-site scripting
@@ -37,7 +40,20 @@ To exploit this vulnerability, log in as a customer and inject the following jav
 
 This attack will allow a malicious user to inject a script into the database that then will run on the employee level and expose customer details to an external web server controlled by the malicious user. In this case, it is simply the same app server as is running, but this would be different in a real attack.
 
-Defending against this vulnerability can be easily done at multiple levels
+Defending against this vulnerability can be done at multiple levels
 * Validating user input 
-* Encoding any dynamic output on the page
+* Encoding dynamic output on web pages
+
+## Insecure Direct Object Reference
+
+To exploit this vulnerability, log in as a customer and type in the following url which will allow you to access sensitive employee-only information directly.
+
+`/sensitive`
+
+This attack allows users to access information that they should not be authorized to access. 
+
+Defending against this vulnerability can be done through multiple authorization mechanisms
+* Spring Security url protection configurations
+* Method-level security with role-based access configuration
+* Method pre-authorization configuration
 

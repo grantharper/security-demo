@@ -19,6 +19,8 @@ public interface BankAccountService {
 	
 	void updateCustomerNameInsecure(String username, String firstName, String lastName);
 	
-	void deposit(Long accountId, Double depositAmount);
+	void depositInsecure(Long accountId, Double depositAmount);
+	
+	void depositSecure(Long accountId, Double depositAmount);
 	
 }
