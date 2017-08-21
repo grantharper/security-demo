@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -88,7 +89,6 @@ public class SecureController {
 	public String performCustomerDeposit(Model model, @PathVariable("accountId") String accountId,
 			@RequestParam("amount") Double amount) {
 		log.debug("depositing into accountId=" + accountId + " amount=" + amount);
-		//Double depositAmount = Double.valueOf(request.getParameter("amount"));
 		
 		bankAccountService.depositSecure(Long.valueOf(accountId), amount);
 		return "redirect:/customer/account/" + accountId;
@@ -108,6 +108,7 @@ public class SecureController {
 		return "customer";
 	}
 
+	@Secured("ROLE_EMPLOYEE")
 	@RequestMapping(value = "/sensitive", method = RequestMethod.GET)
 	public void retrieveEmployeeDocument(Model model,
 			HttpServletResponse response) throws IOException {
@@ -115,7 +116,7 @@ public class SecureController {
 		OutputStream outputStream = null;
 		response.setHeader("Content-Disposition", "attachment;filename=sensitive.txt");
 		response.setContentType("text/plain");
-		File file = new File("sensitive.txt");
+		File file = new File("src/main/resources/sensitive.txt");
 		response.setContentLengthLong(file.length());
 
 		outputStream = response.getOutputStream();

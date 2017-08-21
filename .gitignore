@@ -19,3 +19,6 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+
+#Application-Specific
+*hack-output.txt

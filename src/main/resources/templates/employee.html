@@ -3,20 +3,21 @@
 </head>
 <body>
 <h1>Employee Portal</h1>
-<a href="/">Home</a>
+<a th:href="@{/}">Home</a>
 <div th:replace="fragments/logout :: logout"></div>
 <br/>
-<a href="/sensitive">Download Sensitive Employee Info</a>
+<a th:href="@{/sensitive}">Download Sensitive Employee Info</a>
 <br/>
 <h3>Customer Information</h3>
 <table>
 <thead>
-<tr><th>Customer Id</th><th>Name</th><th>Review</th></tr>
+<tr><th>Customer Id</th><th>Name</th><th>Total Balance</th><th>Review</th></tr>
 </thead>
 <tbody>
 <tr th:each="customer: ${customers}">
 <td th:text="${customer.customerId}">X</td>
-<td th:text="${customer.firstName + ' ' + customer.lastName}">BBBB</td>
+<td th:text="${customer.firstName + ' ' + customer.lastName}">Sample Name</td>
+<td th:text="${'$' + #numbers.formatDecimal(customer.totalAccountValue,3,'COMMA',2,'POINT')}">Amount</td>
 <td><a th:href="@{/employee/customer/} + ${customer.customerId}">View Accounts</a></td>
 </tr>
 </tbody>

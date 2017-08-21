@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 public class Customer {
@@ -30,6 +31,9 @@ public class Customer {
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="customerId")
 	private Set<BankAccount> accounts;
+
+	@Transient
+	private Double totalAccountValue;
 
 	public Long getCustomerId() {
 		return customerId;
@@ -78,7 +82,19 @@ public class Customer {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
-	
 
+	public Double getTotalAccountValue() {
+		return totalAccountValue;
+	}
+
+	public void setTotalAccountValue() {
+		Double accountValue = 0.0;
+		for(BankAccount account : this.accounts){
+			accountValue += account.getBalance();
+		}
+		this.totalAccountValue = accountValue;
+	}
+	
+	
+	
 }

@@ -3,7 +3,9 @@
 </head>
 <body>
 <h1>Customer Portal</h1>
+<a th:href="@{/}">Home</a>
 <a th:href="@{/customer}">Back to Customer</a>
+<div th:replace="fragments/manage-account :: name"></div>
 <br/>
 <h3>Manage Account</h3>
 <span>Account Number: <span th:text="${account.accountId}"></span></span>
@@ -15,6 +17,5 @@
 <input type="text" name="amount"/>
 <button>Deposit</button>
 </form>
-<h5>Withdraw</h5>
 </body>
 </html>

@@ -3,12 +3,12 @@
 </head>
 <body>
 <h1>Customer Portal</h1>
-<a href="/">Home</a>
+<a th:href="@{/}">Home</a>
 
 <div th:replace="fragments/logout :: logout"></div>
 <br/>
 <h3>Customer Information</h3>
-<span>Name: <span th:utext="${customer.firstName} + ' ' + ${customer.lastName}"></span></span>
+<div th:replace="fragments/manage-account :: name"></div>
 <br/>
 <a th:href="@{/customer/profile}">Edit Profile</a>
 <h3>Account Information</h3>

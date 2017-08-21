@@ -3,13 +3,23 @@ package org.grantharper.websecurity.controller;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringBufferInputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.nio.file.Path;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.assertj.core.util.TextFileWriter;
 import org.grantharper.websecurity.domain.BankAccount;
 import org.grantharper.websecurity.domain.Customer;
 import org.grantharper.websecurity.service.BankAccountService;
@@ -24,7 +34,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -42,7 +51,7 @@ public class InsecureController {
 
 		return "customer";
 	}
-	
+
 	private void populateCustomerDetails(Model model, HttpServletRequest request) {
 		String username = request.getUserPrincipal().getName();
 		log.debug("customer method username=" + username);
@@ -56,16 +65,15 @@ public class InsecureController {
 		model.addAttribute("account", account);
 		return "account";
 	}
-	
+
 	@RequestMapping(value = "/customer/profile", method = RequestMethod.GET)
-	public String displayCustomerProfile(Model model, HttpServletRequest request){
+	public String displayCustomerProfile(Model model, HttpServletRequest request) {
 		populateCustomerDetails(model, request);
 		return "customer-profile";
 	}
-	
+
 	@RequestMapping(value = "/customer/profile", params = { "firstName", "lastName" }, method = RequestMethod.GET)
-	public String updateCustomerName(Model model, HttpServletRequest request
-			) {
+	public String updateCustomerName(Model model, HttpServletRequest request) {
 		String firstName = (String) request.getParameter("firstName");
 		String lastName = (String) request.getParameter("lastName");
 		log.debug("entered the param controller with firstName=" + firstName + " and lastName=" + lastName);
@@ -80,7 +88,7 @@ public class InsecureController {
 			HttpServletRequest request) {
 		log.debug("depositing into accountId=" + accountId + " amount=" + request.getParameter("amount"));
 		Double depositAmount = Double.valueOf(request.getParameter("amount"));
-		
+
 		bankAccountService.depositInsecure(Long.valueOf(accountId), depositAmount);
 		return "redirect:/customer/account/" + accountId;
 	}
@@ -100,13 +108,13 @@ public class InsecureController {
 	}
 
 	@RequestMapping(value = "/sensitive", method = RequestMethod.GET)
-	public void retrieveEmployeeDocument(Model model,
-			HttpServletResponse response) throws IOException {
+	public void retrieveEmployeeDocument(Model model, HttpServletResponse response) throws IOException {
 
 		OutputStream outputStream = null;
 		response.setHeader("Content-Disposition", "attachment;filename=sensitive.txt");
 		response.setContentType("text/plain");
-		File file = new File("sensitive.txt");
+
+		File file = new File("src/main/resources/sensitive.txt");
 		response.setContentLengthLong(file.length());
 
 		outputStream = response.getOutputStream();
@@ -125,7 +133,14 @@ public class InsecureController {
 	@RequestMapping(value = "/receive-hack", method = RequestMethod.POST)
 	public @ResponseBody ResponseEntity<Object> receiveHack(HttpServletRequest request) {
 		log.info("hack sent account details: " + request.getParameter("accountInfo"));
-
+		String accountInfo = request.getParameter("accountInfo");
+		try {
+			OutputStreamWriter os = new FileWriter("hack-output.txt", true);
+			os.append(accountInfo);
+			os.close();
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+		}
 		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 	}
 

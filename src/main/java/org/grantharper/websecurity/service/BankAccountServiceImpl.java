@@ -31,6 +31,9 @@ public class BankAccountServiceImpl implements BankAccountService {
 	@Override
 	public List<Customer> retrieveAllCustomers() {
 		List<Customer> customers = customerRepo.findAll();
+		for(Customer customer: customers){
+			customer.setTotalAccountValue();
+		}
 		return customers;
 	}
 
