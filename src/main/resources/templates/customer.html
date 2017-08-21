@@ -8,18 +8,9 @@
 <div th:replace="fragments/logout :: logout"></div>
 <br/>
 <h3>Customer Information</h3>
-<!--hack <script>alert("hacked");</script> -->
-<!-- <script type="text/javascript" src="js/read-accounts.js"></script> -->
-<!-- <script type="text/javascript" th:src="@{js/read-accounts.js}"></script> -->
 <span>Name: <span th:utext="${customer.firstName} + ' ' + ${customer.lastName}"></span></span>
 <br/>
-<span>Change Name:</span>
-<form th:action="@{/customer}" method="get">
-<input type="text" name="firstName"/>
-<input type="text" name="lastName" />
-<button>Submit</button>
-</form>
-<!-- <script>alert("Cookie=" + document.cookie.jsessionid);</script> -->
+<a th:href="@{/customer/profile}">Edit Profile</a>
 <h3>Account Information</h3>
 <table id="accountInformation">
 <thead>

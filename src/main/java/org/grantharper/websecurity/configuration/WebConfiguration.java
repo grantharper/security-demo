@@ -20,13 +20,13 @@ public class WebConfiguration {
 	}
 	
 
-//	@Bean(name = "messageSource")
-//	public MessageSource messageSource() {
-//		ReloadableResourceBundleMessageSource reloadMessage = new ReloadableResourceBundleMessageSource();
-//		reloadMessage.setBasename("classpath:/messages");
-//		reloadMessage.setDefaultEncoding("UTF-8");
-//		reloadMessage.setCacheSeconds(0);
-//		return reloadMessage;
-//	}
+	@Bean(name = "messageSource")
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource reloadMessage = new ReloadableResourceBundleMessageSource();
+		reloadMessage.setBasename("classpath:/messages");
+		reloadMessage.setDefaultEncoding("UTF-8");
+		reloadMessage.setCacheSeconds(0);
+		return reloadMessage;
+	}
 
 }

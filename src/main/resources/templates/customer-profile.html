@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+</head>
+<body>
+<h1>Customer Portal</h1>
+<a th:href="@{/customer}">Back to Customer Home Page</a>
+
+<div th:replace="fragments/logout :: logout"></div>
+<br/>
+<h3>Edit Customer Profile</h3>
+<div th:replace="fragments/manage-account :: nameChange"></div>
+</body>
+</html>

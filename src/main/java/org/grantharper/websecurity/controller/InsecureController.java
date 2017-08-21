@@ -38,13 +38,16 @@ public class InsecureController {
 
 	@RequestMapping(value = "/customer", method = RequestMethod.GET)
 	public String getCustomerPage(Model model, HttpServletRequest request, HttpServletResponse response) {
+		populateCustomerDetails(model, request);
+
+		return "customer";
+	}
+	
+	private void populateCustomerDetails(Model model, HttpServletRequest request) {
 		String username = request.getUserPrincipal().getName();
 		log.debug("customer method username=" + username);
 		Customer customer = bankAccountService.retrieveCustomerByUsername(username);
 		model.addAttribute("customer", customer);
-		model.addAttribute("nameTest", customer.getFirstName());
-
-		return "customer";
 	}
 
 	@RequestMapping(value = "/customer/account/{accountId}", method = RequestMethod.GET)
@@ -53,19 +56,14 @@ public class InsecureController {
 		model.addAttribute("account", account);
 		return "account";
 	}
-
-//	@RequestMapping(value = "/customer", params = { "firstName", "lastName" }, method = RequestMethod.GET)
-//	public String updateCustomerName(Model model, HttpServletRequest request,
-//			@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-//		log.debug("entered the param controller with firstName=" + firstName + " and lastName=" + lastName);
-//		String username = request.getUserPrincipal().getName();
-//		// bankAccountService.updateCustomerName(username, firstName, lastName);
-//		bankAccountService.updateCustomerNameInsecure(username, firstName, lastName);
-//		return "customer";
-//		//return "redirect:/customer";
-//	}
 	
-	@RequestMapping(value = "/customer", params = { "firstName", "lastName" }, method = RequestMethod.GET)
+	@RequestMapping(value = "/customer/profile", method = RequestMethod.GET)
+	public String displayCustomerProfile(Model model, HttpServletRequest request){
+		populateCustomerDetails(model, request);
+		return "customer-profile";
+	}
+	
+	@RequestMapping(value = "/customer/profile", params = { "firstName", "lastName" }, method = RequestMethod.GET)
 	public String updateCustomerName(Model model, HttpServletRequest request
 			) {
 		String firstName = (String) request.getParameter("firstName");
@@ -91,7 +89,7 @@ public class InsecureController {
 	public String getEmployeePage(Model model) {
 		List<Customer> customers = bankAccountService.retrieveAllCustomers();
 		model.addAttribute("customers", customers);
-		return "employee";
+		return "employee-insecure";
 	}
 
 	@RequestMapping(value = "/employee/customer/{customerId}", method = RequestMethod.GET)

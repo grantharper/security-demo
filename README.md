@@ -53,7 +53,7 @@ To exploit this vulnerability, log in as a customer and type in the following ur
 This attack allows users to access information that they should not be authorized to access. 
 
 Defending against this vulnerability can be done through multiple authorization mechanisms
-* Spring Security url protection configurations
+* URL-level protection
 * Method-level security with role-based access configuration
 * Method pre-authorization configuration
 

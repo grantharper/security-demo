@@ -16,7 +16,7 @@
 <tbody>
 <tr th:each="customer: ${customers}">
 <td th:text="${customer.customerId}">X</td>
-<td th:text="${customer.firstName + ' ' + customer.lastName}">BBBB</td>
+<td th:utext="${customer.firstName + ' ' + customer.lastName}">BBBB</td>
 <td><a th:href="@{/employee/customer/} + ${customer.customerId}">View Accounts</a></td>
 </tr>
 </tbody>
