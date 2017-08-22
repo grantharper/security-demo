@@ -22,6 +22,10 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers("/customer", "/customer/**").hasRole("CUSTOMER").antMatchers("/employee", "/employee/**")
 				.hasRole("EMPLOYEE").anyRequest().authenticated().and().formLogin().permitAll().and().httpBasic().and()
 				.logout().logoutSuccessUrl("/").permitAll();
+		
+		// disable these protections so that I can access the H2 console
+		httpSecurity.csrf().disable();
+		httpSecurity.headers().frameOptions().disable();
 	}
 	
 }

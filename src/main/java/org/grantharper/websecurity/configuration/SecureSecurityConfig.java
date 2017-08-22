@@ -14,12 +14,13 @@ public class SecureSecurityConfig extends BaseSecurityConfig {
 
 	public static Logger log = LoggerFactory.getLogger(SecureSecurityConfig.class);
 
-//	@Override
-//	protected void configure(HttpSecurity httpSecurity) throws Exception {
-//		httpSecurity.authorizeRequests().antMatchers("/", "/console/**").permitAll()
-//		.antMatchers("/customer", "/customer/**").hasRole("CUSTOMER").antMatchers("/employee", "/employee/**", "/sensitive")
-//		.hasRole("EMPLOYEE").anyRequest().authenticated().and().formLogin().permitAll().and().httpBasic().and()
-//		.logout().logoutSuccessUrl("/").permitAll();
-//
-//	}
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		super.configure(httpSecurity);
+		httpSecurity.authorizeRequests().antMatchers("/", "/console/**").permitAll()
+		.antMatchers("/customer", "/customer/**").hasRole("CUSTOMER").antMatchers("/employee", "/employee/**", "/sensitive")
+		.hasRole("EMPLOYEE").anyRequest().authenticated().and().formLogin().permitAll().and().httpBasic().and()
+		.logout().logoutSuccessUrl("/").permitAll();
+
+	}
 }

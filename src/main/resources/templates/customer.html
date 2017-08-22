@@ -19,7 +19,7 @@
 <tbody>
 <tr th:each="account: ${customer.accounts}">
 <td th:text="${account.accountId}">X</td>
-<td th:text="${account.balance}">BBBB</td>
+<td th:text="${'$' + #numbers.formatDecimal(account.balance,3,'COMMA',2,'POINT')}">BBBB</td>
 <td><a th:href="@{/customer/account/} + ${account.accountId}">Manage</a></td>
 </tr>
 </tbody>

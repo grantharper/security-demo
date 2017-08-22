@@ -10,7 +10,7 @@
 <h3>Manage Account</h3>
 <span>Account Number: <span th:text="${account.accountId}"></span></span>
 <br/>
-<span>Balance: <span th:text="${account.balance}"></span></span>
+<span>Balance: <span th:text="${'$' + #numbers.formatDecimal(account.balance,3,'COMMA',2,'POINT')}"></span></span>
 <h5>Deposit</h5>
 <form th:action="@{/customer/account/} + ${account.accountId} + '/deposit'" method="post">
 <label for="amount">Deposit Amount: </label>

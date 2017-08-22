@@ -15,13 +15,7 @@ public class InsecureSecurityConfig extends BaseSecurityConfig {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		super.configure(httpSecurity);
-		// disable CSRF protection
-		httpSecurity.csrf().disable();
 
-		// TODO: what does this do?
-		httpSecurity.headers().frameOptions().disable();
-		
 		httpSecurity.headers().xssProtection().disable();
-
 	}
 }

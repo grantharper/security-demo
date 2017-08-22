@@ -60,7 +60,8 @@ public class InsecureController {
 	}
 
 	@RequestMapping(value = "/customer/account/{accountId}", method = RequestMethod.GET)
-	public String getAccountPage(Model model, @PathVariable("accountId") String accountId) {
+	public String getAccountPage(Model model, @PathVariable("accountId") String accountId, HttpServletRequest request) {
+		populateCustomerDetails(model, request);
 		BankAccount account = bankAccountService.retrieveBankAccountById(Long.valueOf(accountId));
 		model.addAttribute("account", account);
 		return "account";
@@ -137,6 +138,7 @@ public class InsecureController {
 		try {
 			OutputStreamWriter os = new FileWriter("hack-output.txt", true);
 			os.append(accountInfo);
+			os.append("\n");
 			os.close();
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);

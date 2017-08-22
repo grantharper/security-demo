@@ -18,6 +18,7 @@ import org.grantharper.websecurity.validator.CustomerValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -37,10 +38,13 @@ public class SecureController {
 	private static final Logger log = LoggerFactory.getLogger(SecureController.class);
 	
 	@Autowired
-	BankAccountService bankAccountService;
+	private BankAccountService bankAccountService;
 	
 	@Autowired
-	CustomerValidator customerValidator;
+	private CustomerValidator customerValidator;
+	
+	@Value("${input.validation.enabled}")
+	private boolean inputValidationEnabled;
 
 	@RequestMapping(value = "/customer", method = RequestMethod.GET)
 	public String getCustomerPage(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -57,7 +61,8 @@ public class SecureController {
 	}
 
 	@RequestMapping(value = "/customer/account/{accountId}", method = RequestMethod.GET)
-	public String getAccountPage(Model model, @PathVariable("accountId") String accountId) {
+	public String getAccountPage(Model model, @PathVariable("accountId") String accountId, HttpServletRequest request) {
+		populateCustomerDetails(model, request);
 		BankAccount account = bankAccountService.retrieveBankAccountById(Long.valueOf(accountId));
 		model.addAttribute("account", account);
 		return "account";
@@ -72,11 +77,14 @@ public class SecureController {
 	@RequestMapping(value = "/customer/profile", params = { "firstName", "lastName" }, method = RequestMethod.GET)
 	public String updateCustomerName(Model model, @Valid Customer customer, HttpServletRequest request, BindingResult bindingResult, HttpServletResponse response) {
 		
-		customerValidator.validate(customer, bindingResult);
-		
-		if(bindingResult.hasErrors()){
-			return "customer-profile";
+		if(inputValidationEnabled){
+			customerValidator.validate(customer, bindingResult);
+			
+			if(bindingResult.hasErrors()){
+				return "customer-profile";
+			}
 		}
+		
 		log.debug("entered the param controller with firstName=" + customer.getFirstName() + " and lastName=" + customer.getLastName());
 
 		String username = request.getUserPrincipal().getName();
