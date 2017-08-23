@@ -1,8 +1,12 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 </head>
 <body>
 <h1>Banking Security Demo App</h1>
+<div sec:authorize="isAuthenticated()">
+<div th:replace="fragments/logout :: logout"></div>
+<p>Username: <span sec:authentication="name"></span></p>
+</div>
 <a th:href="@{/employee}">Employee Portal</a>
 <br/>
 <br/>
