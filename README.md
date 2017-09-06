@@ -20,9 +20,16 @@ Secure
 `mvn spring-boot:run -Dspring.profiles.active=secure`
 User a browser to access `http://localhost:8081`
 
+In secure mode, you also have the option to enable or disable input validation using the following flag in `application-secure.properties`
+
+`input.validation.enabled=false`
+
+Disabling input validation will allow you to illustrate the power of an ORM and output encoding in protecting against attacks even when input validation does not occur.
+
 Currently, the application illustrates the following vulnerabilities
 * SQL Injection
 * Stored Cross-site scripting (XSS)
+* Insecure Direct Object Reference
 
 ## SQL Injection
 
@@ -41,8 +48,9 @@ You may view the database by logging into the H2 console by clicking the link fr
 Defending against this vulnerability can be done at multiple levels
 * ORM
 * Input validation
+* Database permissions restrictions
 
-## Cross-site scripting
+## Cross-Site Scripting
 
 To exploit this vulnerability, log in as a customer and inject the following javascript into the first name field as follows
 
