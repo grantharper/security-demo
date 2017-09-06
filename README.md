@@ -34,7 +34,7 @@ For example:
 
 `' DROP TABLE customer; --`
 
-`' UPDATE bank_account SET balance=999999999 WHERE customer_id=2; --
+`' UPDATE bank_account SET balance=999999999 WHERE customer_id=2; --`
 
 You may view the database by logging into the H2 console by clicking the link from the index page. The connection details are found in the application.properties file.
 
