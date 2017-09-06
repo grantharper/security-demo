@@ -37,34 +37,6 @@ public class InsecureController {
 	@Autowired
 	BankAccountService bankAccountService;
 
-	@RequestMapping(value = "/customer", method = RequestMethod.GET)
-	public String getCustomerPage(Model model, HttpServletRequest request, HttpServletResponse response) {
-		populateCustomerDetails(model, request);
-
-		return "customer";
-	}
-
-	private void populateCustomerDetails(Model model, HttpServletRequest request) {
-		String username = request.getUserPrincipal().getName();
-		log.debug("customer method username=" + username);
-		Customer customer = bankAccountService.retrieveCustomerByUsername(username);
-		model.addAttribute("customer", customer);
-	}
-
-	@RequestMapping(value = "/customer/account/{accountId}", method = RequestMethod.GET)
-	public String getAccountPage(Model model, @PathVariable("accountId") String accountId, HttpServletRequest request) {
-		populateCustomerDetails(model, request);
-		BankAccount account = bankAccountService.retrieveBankAccountById(Long.valueOf(accountId));
-		model.addAttribute("account", account);
-		return "account";
-	}
-
-	@RequestMapping(value = "/customer/profile", method = RequestMethod.GET)
-	public String displayCustomerProfile(Model model, HttpServletRequest request) {
-		populateCustomerDetails(model, request);
-		return "customer-profile";
-	}
-
 	@RequestMapping(value = "/customer/profile", params = { "firstName", "lastName" }, method = RequestMethod.GET)
 	public String updateCustomerName(Model model, HttpServletRequest request) {
 		String firstName = (String) request.getParameter("firstName");
@@ -93,21 +65,6 @@ public class InsecureController {
 		return "employee-insecure";
 	}
 
-	@RequestMapping(value = "/employee/customer/{customerId}", method = RequestMethod.GET)
-	public String getEmployeeCustomerPage(Model model, @PathVariable("customerId") String customerId) {
-		Customer customer = bankAccountService.retrieveCustomerById(Long.valueOf(customerId));
-		model.addAttribute("customer", customer);
-		return "customer";
-	}
-	
-	@RequestMapping(value = "/employee/customer/{customerId}/account/{accountId}", method = RequestMethod.GET)
-	public String getEmployeeCustomerAccountPage(Model model, @PathVariable("accountId") String accountId, @PathVariable("customerId") String customerId){
-	  BankAccount account = bankAccountService.retrieveBankAccountById(Long.valueOf(accountId));
-    model.addAttribute("account", account);
-    Customer customer = bankAccountService.retrieveCustomerById(Long.valueOf(customerId));
-    model.addAttribute("customer", customer);
-	  return "account";
-	}
 
 	@RequestMapping(value = "/sensitive", method = RequestMethod.GET)
 	public void retrieveEmployeeDocument(Model model, HttpServletResponse response) throws IOException {

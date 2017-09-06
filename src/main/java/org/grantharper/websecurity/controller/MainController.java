@@ -1,6 +1,7 @@
 package org.grantharper.websecurity.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.grantharper.websecurity.domain.BankAccount;
 import org.grantharper.websecurity.domain.Customer;
@@ -47,6 +48,41 @@ public class MainController
     Customer customer = bankAccountService.retrieveCustomerById(Long.valueOf(customerId));
     model.addAttribute("customer", customer);
     return "account";
+  }
+  
+  @RequestMapping(value = "/employee/customer/{customerId}", method = RequestMethod.GET)
+  public String getEmployeeCustomerPage(Model model, @PathVariable("customerId") String customerId) {
+    Customer customer = bankAccountService.retrieveCustomerById(Long.valueOf(customerId));
+    model.addAttribute("customer", customer);
+    return "customer";
+  }
+  
+  @RequestMapping(value = "/customer", method = RequestMethod.GET)
+  public String getCustomerPage(Model model, HttpServletRequest request, HttpServletResponse response) {
+    populateCustomerDetails(model, request);
+
+    return "customer";
+  }
+
+  private void populateCustomerDetails(Model model, HttpServletRequest request) {
+    String username = request.getUserPrincipal().getName();
+    log.debug("customer method username=" + username);
+    Customer customer = bankAccountService.retrieveCustomerByUsername(username);
+    model.addAttribute("customer", customer);
+  }
+
+  @RequestMapping(value = "/customer/account/{accountId}", method = RequestMethod.GET)
+  public String getAccountPage(Model model, @PathVariable("accountId") String accountId, HttpServletRequest request) {
+    populateCustomerDetails(model, request);
+    BankAccount account = bankAccountService.retrieveBankAccountById(Long.valueOf(accountId));
+    model.addAttribute("account", account);
+    return "account";
+  }
+
+  @RequestMapping(value = "/customer/profile", method = RequestMethod.GET)
+  public String displayCustomerProfile(Model model, HttpServletRequest request) {
+    populateCustomerDetails(model, request);
+    return "customer-profile";
   }
 
 }
