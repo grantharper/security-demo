@@ -1,4 +1,4 @@
-# Common Security Vulnerability Demo
+# Security Vulnerability Demo
 
 The purpose of this application is to illustrate a few common security vulnerabilities in web applications. Understanding how these exploits work is critical in being able to defend against them. 
 
@@ -30,6 +30,18 @@ Currently, the application illustrates the following vulnerabilities
 * SQL Injection
 * Stored Cross-site scripting (XSS)
 * Insecure Direct Object Reference
+
+To use the application, you can log in as an employee or a customer after clicking on either the Employee Portal or Customer Portal link. For simplicity, no password is needed to log in.
+
+| Username | Role | 
+| --- | --- |
+| emp | Employee |
+| liz | Customer |
+| katie | Customer |
+
+To view the in-memory H2 database, click the H2 Database Console link and login using the JDBC URL `jdbc:h2:mem:testdb` and the username `user` with a blank password. From there, you should be able to see the console (pictured below) which will allow you to run SQL queries on the database.
+
+![H2 Database Console Image](h2-capture.PNG)
 
 ## SQL Injection
 
