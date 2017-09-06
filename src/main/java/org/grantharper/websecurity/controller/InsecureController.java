@@ -99,6 +99,15 @@ public class InsecureController {
 		model.addAttribute("customer", customer);
 		return "customer";
 	}
+	
+	@RequestMapping(value = "/employee/customer/{customerId}/account/{accountId}", method = RequestMethod.GET)
+	public String getEmployeeCustomerAccountPage(Model model, @PathVariable("accountId") String accountId, @PathVariable("customerId") String customerId){
+	  BankAccount account = bankAccountService.retrieveBankAccountById(Long.valueOf(accountId));
+    model.addAttribute("account", account);
+    Customer customer = bankAccountService.retrieveCustomerById(Long.valueOf(customerId));
+    model.addAttribute("customer", customer);
+	  return "account";
+	}
 
 	@RequestMapping(value = "/sensitive", method = RequestMethod.GET)
 	public void retrieveEmployeeDocument(Model model, HttpServletResponse response) throws IOException {
