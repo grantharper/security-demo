@@ -1,9 +1,9 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 </head>
 <body>
 <div th:fragment="logout">
-	<form th:action="@{/logout}" method="post">
+	<form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
 		<button>Logout</button>
 	</form>
 </div>
