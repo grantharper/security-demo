@@ -1,10 +1,15 @@
 package org.grantharper.websecurity.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 public class BaseSecurityConfig extends WebSecurityConfigurerAdapter{
+  
+  @Autowired
+  AccessDeniedHandler accessDeniedHandler;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -21,7 +26,7 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter{
 		httpSecurity.authorizeRequests().antMatchers("/", "/console/**").permitAll()
 				.antMatchers("/customer", "/customer/**").hasRole("CUSTOMER").antMatchers("/employee", "/employee/**")
 				.hasRole("EMPLOYEE").anyRequest().authenticated().and().formLogin().permitAll().and().httpBasic().and()
-				.logout().logoutSuccessUrl("/").permitAll();
+				.logout().logoutSuccessUrl("/").permitAll().and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 		
 		// disable these protections so that I can access the H2 console
 		httpSecurity.csrf().disable();
