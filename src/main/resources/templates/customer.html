@@ -2,12 +2,12 @@
 <head th:replace="fragments/head :: head">
 </head>
 <body>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<div class="container">
 <h1 sec:authorize="hasRole('ROLE_CUSTOMER')">Customer Portal</h1>
 <h1 sec:authorize="hasRole('ROLE_EMPLOYEE')">Employee Portal</h1>
-<a th:href="@{/}">Home</a>
 <a sec:authorize="hasRole('ROLE_EMPLOYEE')" th:href="@{/employee}">Back to Employee</a>
 
-<div th:replace="fragments/logout :: logout"></div>
 <br/>
 <h3>Customer Information</h3>
 <div th:replace="fragments/manage-account :: name"></div>
@@ -29,5 +29,6 @@
 </tr>
 </tbody>
 </table>
+</div>
 </body>
 </html>

@@ -4,16 +4,21 @@
 <body>
 <div th:fragment="nameChange">
 <span>Change Name:</span>
+
 <form action="" method="get">
-<input type="text" name="firstName" th:field="${customer.firstName}"/>
+<div class="form-group">
+<input class="form-control" type="text" name="firstName" th:field="${customer.firstName}"/>
 <p class="error" th:if="${#fields.hasErrors('customer.firstName')}" th:errors="*{customer.firstName}"></p>
-<br/>
-<input type="text" name="lastName" th:field="${customer.lastName}"/>
+</div>
+<div class="form-group">
+<input class="form-control" type="text" name="lastName" th:field="${customer.lastName}"/>
 <p class="error" th:if="${#fields.hasErrors('customer.lastName')}" th:errors="*{customer.lastName}"></p>
-<br/>
-<button>Submit</button>
+</div>
+
+<button class="btn btn-primary">Submit</button>
 </form>
 </div>
+
 <div th:fragment="name">
 <span>Name: <span th:utext="${customer.firstName} + ' ' + ${customer.lastName}"></span></span>
 </div>

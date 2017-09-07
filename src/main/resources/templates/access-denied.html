@@ -1,12 +1,15 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
+<head th:replace="fragments/head :: head">
 
 </head>
 <body>
-<h1>Forbidden Resource</h1>
-<a href="/">Home</a>
-<a th:href="${referrerUrl}">Back to previous page</a>
+	<nav th:replace="fragments/navbar :: navbar"></nav>
+	<div class="container">
+		<h1>Forbidden Resource</h1>
+		<a th:href="${referrerUrl}">Back to previous
+			page</a>
+	</div>
 </body>
 
 </html>

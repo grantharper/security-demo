@@ -84,5 +84,10 @@ public class MainController
     populateCustomerDetails(model, request);
     return "customer-profile";
   }
+  
+  @RequestMapping(value = "/bootstrap", method = RequestMethod.GET)
+  public String displayBoostrap(){
+    return "bootstrap";
+  }
 
 }

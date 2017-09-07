@@ -1,20 +1,18 @@
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head :: head">
 </head>
 <body>
-<h1>Banking Security Demo App</h1>
-<div sec:authorize="isAuthenticated()">
-<div th:replace="fragments/logout :: logout"></div>
-<p>Username: <span sec:authentication="name"></span></p>
-</div>
-<a th:href="@{/employee}">Employee Portal</a>
-<br/>
-<br/>
-<a th:href="@{/customer}">Customer Portal</a>
-<br/>
-<br/>
-<a th:href="@{/console}" target="_blank">H2 Database Console</a>
-<br/>
-<br/>
+	<nav th:replace="fragments/navbar :: navbar"></nav>
+	<div class="container">
+		<h1>Welcome to the Security Demo</h1>
+		<p>This application is designed to demonstrate how security
+			vulnerabilities can be exploited by hackers</p>
+		<div sec:authorize="isAuthenticated()">
+			<p class="account-identification">
+				Logged in Username: <span sec:authentication="name"></span>
+			</p>
+		</div>
+	</div>
 </body>
 </html>
