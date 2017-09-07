@@ -82,4 +82,10 @@ public class BankAccountServiceImpl implements BankAccountService {
 		insecureDao.updateCustomerName(firstName, lastName, username);
 	}
 
+  @Override
+  public void closeAccount(Long accountId)
+  {
+    accountRepo.delete(accountId);
+  }
+
 }

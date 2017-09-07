@@ -24,7 +24,7 @@
 <tr th:each="account: ${customer.accounts}">
 <td th:text="${account.accountId}">X</td>
 <td th:text="${'$' + #numbers.formatDecimal(account.balance,3,'COMMA',2,'POINT')}">BBBB</td>
-<td sec:authorize="hasRole('ROLE_EMPLOYEE')"><a th:href="@{/employee/customer/} + ${customer.customerId} + '/account/' + ${account.accountId}">Manage</a></td>
+<td sec:authorize="hasRole('ROLE_EMPLOYEE')"><form th:action="@{/employee/customer/} + ${customer.customerId} + '/account/' + ${account.accountId} + '/close'" method="post"><button class="btn btn-primary">Close</button></form></td>
 <td sec:authorize="hasRole('ROLE_CUSTOMER')"><a th:href="@{/customer/account/} + ${account.accountId}">Manage</a></td>
 </tr>
 </tbody>

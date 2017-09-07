@@ -28,8 +28,9 @@ Disabling input validation will allow you to illustrate the power of an ORM and 
 
 Currently, the application illustrates the following vulnerabilities
 * SQL Injection
-* Stored Cross-site scripting (XSS)
+* Stored Cross-Site Scripting (XSS)
 * Insecure Direct Object Reference
+* Cross-Site Request Forgery 
 
 To use the application, you can log in as an employee or a customer after clicking on either the Employee Portal or Customer Portal link. For simplicity, no password is needed to log in.
 
@@ -87,3 +88,12 @@ Defending against this vulnerability can be done through multiple authorization 
 * Method-level security with role-based access configuration
 * Method pre-authorization configuration
 
+## Cross-Site Request Forgery
+
+To exploit this vulnerability, log in as an employee and then open the `csrf-example.html` in your browser which simulates an attacker's website. For the insecure mode, click the `Insecure CSRF` button and notice that account 1 for customer Katie Fake has been removed from the system. For secure mode, click the `Secure CSRF` and notice that the request is not processed by the system and the Forbidden Resource page is displayed. 
+
+The CSRF attack will allow a malicious user to craft links/forms that can be sent over email or posted to forums that take advantage of the fact that a user may be already authenticated and authorized to perform actions on the targeted site. In this case, it closes an account that still has a balance.
+
+Defending against this vulnerability can be done through multiple mechanisms
+* Use random CSRF tokens that are automatically generated and must be supplied in order to perform a state-changing operation during a POST request. Notice the hidden input in the secure mode of the application with attribute `name="_csrf"`
+* Check the refferer header in the client's HTTP request

@@ -23,4 +23,6 @@ public interface BankAccountService {
 	
 	void depositSecure(Long accountId, Double depositAmount);
 	
+	void closeAccount(Long accountId);
+	
 }

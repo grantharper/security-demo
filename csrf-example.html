@@ -1,0 +1,15 @@
+<html>
+
+<body>
+    <p>Insecure Button</p>
+    <form action="http://localhost:8080/employee/customer/1/account/1/close" method="post">
+        <button>Insecure CSRF</button>
+    </form>
+    <br/>
+    <p>Secure Button</p>
+    <form action="http://localhost:8081/employee/customer/1/account/1/close" method="post">
+        <button>Secure CSRF</button>
+    </form>
+</body>
+
+</html>

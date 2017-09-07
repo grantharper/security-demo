@@ -64,6 +64,13 @@ public class InsecureController {
 		model.addAttribute("customers", customers);
 		return "employee-insecure";
 	}
+	
+	@RequestMapping(value = "/employee/customer/{customerId}/account/{accountId}/close", method = RequestMethod.POST)
+	public String closeCustomerAccount(@PathVariable("accountId") String accountId, @PathVariable("customerId") String customerId) {
+	  log.info("closing customer account for customerId=" + customerId + ", accountId=" + accountId);
+	  bankAccountService.closeAccount(Long.valueOf(accountId));
+	  return "redirect:/employee/customer/{customerId}";
+	}
 
 
 	@RequestMapping(value = "/sensitive", method = RequestMethod.GET)

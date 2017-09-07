@@ -28,9 +28,6 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter{
 				.hasRole("EMPLOYEE").anyRequest().authenticated().and().formLogin().permitAll().and().httpBasic().and()
 				.logout().logoutSuccessUrl("/").permitAll().and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 		
-		// disable these protections so that I can access the H2 console
-		httpSecurity.csrf().disable();
-		httpSecurity.headers().frameOptions().disable();
 	}
 	
 }
