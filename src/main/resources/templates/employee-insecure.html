@@ -18,7 +18,7 @@
 <td th:text="${customer.customerId}">X</td>
 <!-- the th:utext tag makes it so the output is not encoded and allows the injection of HTML tags -->
 <td th:utext="${customer.firstName + ' ' + customer.lastName}">Sample Name</td>
-<td th:text="${'$' + #numbers.formatDecimal(customer.totalAccountValue,3,'COMMA',2,'POINT')}">Amount</td>
+<td th:text="${'$' + #numbers.formatDecimal(customer.totalAccountValue,1,'COMMA',2,'POINT')}">Amount</td>
 <td><a th:href="@{/employee/customer/} + ${customer.customerId}">View Accounts</a></td>
 </tr>
 </tbody>
