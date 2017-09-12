@@ -1,14 +1,30 @@
 <html>
+<head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
 
 <body>
-    <p>Insecure Button</p>
+    <h1>Welcome to the awesomest forum ever!</h1>
+    <p>Click below to discover the video trending all over the internet right now!</p>
     <form action="http://localhost:8080/employee/customer/1/account/1/close" method="post">
-        <button>Insecure CSRF</button>
+        <button class="btn btn-primary">CSRF to Insecure</button>
     </form>
     <br/>
-    <p>Secure Button</p>
+    <p>To win a million dollars, click below!</p>
     <form action="http://localhost:8081/employee/customer/1/account/1/close" method="post">
-        <button>Secure CSRF</button>
+        <button class="btn btn-primary">CSRF to Secure</button>
+    </form>
+    <br/>
+    <p>Click to see the most surprising fact about eating fruit daily!</p>
+    <form action="http://grantharper.org" method="post">
+        <button class="btn btn-primary">CORS Test</button>
     </form>
 </body>
 
